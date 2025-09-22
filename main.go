@@ -1,5 +1,5 @@
 /*
-  go run main.go -project <your_project_name> -output <output_directory>
+go run main.go -project <your_project_name> -output <output_directory>
 */
 package main
 
@@ -19,10 +19,10 @@ func main() {
 	projectName := flag.String("project", "", "project name")
 	outputDir := flag.String("output", "bin", "output directory")
 	flag.Parse()
-	
+
 	// If the project name argument is empty, try to get the module name from go.mod
 	if *projectName == "" {
-		// If still not available, use the current directory name
+		// use the current directory name
 		wd, err := os.Getwd()
 		if err != nil {
 			fmt.Printf("Failed to get current directory: %v\n", err)
@@ -98,6 +98,7 @@ func buildWithEnv(outputDir, outputName, goos, goarch string) error {
 	cmd.Env = append(os.Environ(),
 		"GOOS="+goos,
 		"GOARCH="+goarch,
+		"CGO_ENABLED=0",
 	)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
